@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol=MARUTI&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=3months
+Sample URL from where to pull the data
 https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
 */
 public class Quote {
