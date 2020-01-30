@@ -29,9 +29,6 @@ public class Quote {
 			URL url = new URL(urlString);
 			URLConnection yc = url.openConnection();
 			
-			String userCredentials = "username:password";
-			String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
 			//Set Request Headers
 			Map<String, String> headers = new HashMap<>();
 			headers.put("X-CSRF-Token", "fetch");
