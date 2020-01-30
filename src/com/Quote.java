@@ -11,23 +11,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp?symbol=ICICIBANK
-https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp
 https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol=MARUTI&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=3months
-https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?symbol=MARUTI&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=3months
+https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
 */
 public class Quote {
 	
 	
 	
 	public static void main(String args[]) {
-		String baseNSEUrl = "https://www1.nseindia.com";
-		String subUrlHD = "/live_market/dynaContent/live_watch/get_quote/getHistoricalData.jsp?";
-		String urlParamsHD = "symbol=MARUTI&series=EQ&fromDate=undefined&toDate=undefined&datePeriod=3months";
+		String baseNSEUrl = "https://nseindia.com";
+		String subUrlHD = "/api/historical/cm/equity?";
+		String urlParamsHD = "symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020";
 		String urlString = baseNSEUrl + subUrlHD + urlParamsHD;
 		System.out.println(urlString);
 		System.out.println("------------------------");
-		String urlString1 = "https://www.google.com/";
 		try {
 			URL url = new URL(urlString);
 			URLConnection yc = url.openConnection();
