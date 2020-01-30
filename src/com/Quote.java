@@ -10,6 +10,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
 Sample URL from where to pull the data
 https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
@@ -50,6 +53,7 @@ public class Quote {
 			String inputLine;
 			while((inputLine = in.readLine()) != null) 
 				System.out.println(inputLine);
+			JSONObject jsonObject = new JSONObject(inputLine);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
