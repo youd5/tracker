@@ -47,13 +47,19 @@ public class Quote {
 			for (int i = 0; i < 1; ++i) {
 				String key = jsonArray.getString(i);
 
-				System.out.println("key = " + key + " \nvalue = ");
+				System.out.println("|----------------------------------------------");
+				System.out.println("|Date        |Open | Close   |High    |Low    |");
+				System.out.println("|----------------------------------------------");
 
 				JSONArray jsonArrayLevel2 = jsonObject.getJSONArray(key);
 				for (int j = 0; j < jsonArrayLevel2.length(); j++) {
 					list.add(jsonArrayLevel2.getJSONObject(i).getFloat("CH_OPENING_PRICE"));
-					System.out.println(jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP") + ": Price = "
-							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE"));
+					System.out.println("|"+ jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP") + " | "
+							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE") + " | "
+							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE") + " | "
+							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_HIGH_PRICE") + " | "
+							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_LOW_PRICE")
+							);
 				}
 			}
 
