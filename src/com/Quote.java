@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -23,45 +22,67 @@ public class Quote {
 	public static void main(String args[]) {
 		String baseNSEUrl = "https://nseindia.com";
 		String subUrlHD = "/api/historical/cm/equity?";
-		String urlParamsHD = "symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020";
+		String urlParamsHD = "series=[%22EQ%22]&from=30-07-2019&to=02-02-2020&symbol=";
 		String urlString = baseNSEUrl + subUrlHD + urlParamsHD;
-		System.out.println(urlString);
-		System.out.println("------------------------");
+		List <String> symbolList = getEquitySymbolList();
+		String symbol;
 		try {
-			String json = jsonGetRequest(urlString);
-			System.out.println(json);
-			parseJson(json);
+			for(int i = 0; i < symbolList.size(); i++) {
+				symbol = symbolList.get(i);
+				String url = urlString + symbol;
+				String json = jsonGetRequest(url);
+				parseJson(json, symbol);
+			}
+			
+			//System.out.println(json);
+			
 		} catch (Exception e) {
 			System.out.println("Error");
 			e.printStackTrace();
 		}
 
 	}
+	
+	public static List<String> getEquitySymbolList(){
+		List <String> symbolList = new ArrayList<String>();
+		symbolList.add("ICICIBANK");
+		symbolList.add("ITC");
+		symbolList.add("HINDUNILVR");
+		symbolList.add("NESTLEIND");
+		symbolList.add("TECHM");
+		symbolList.add("HDFC");
+		symbolList.add("LT");
+		symbolList.add("TCS");
+		symbolList.add("HDFCBANK");
+		symbolList.add("MARUTI");
+		symbolList.add("BAJFINANCE");
+		symbolList.add("KOTAKBANK");
+		symbolList.add("WIPRO");
+		symbolList.add("RELIANCE");
+		symbolList.add("SBIN");
+		symbolList.add("BHARTIARTL");
+		symbolList.add("TITAN");
+		symbolList.add("EICHERMOT");
+		return symbolList;
+	}
 
-	public static void parseJson(String json) {
+	public static void parseJson(String json,String symbol) {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			JSONArray jsonArray = jsonObject.names();
 			List<Float> list = new ArrayList<Float>();
 
-			for (int i = 0; i < 1; ++i) {
-				String key = jsonArray.getString(i);
-
-				System.out.println("|----------------------------------------------");
-				System.out.println("|Date        |Open | Close   |High    |Low    |");
-				System.out.println("|----------------------------------------------");
-
-				JSONArray jsonArrayLevel2 = jsonObject.getJSONArray(key);
-				for (int j = 0; j < jsonArrayLevel2.length(); j++) {
-					list.add(jsonArrayLevel2.getJSONObject(i).getFloat("CH_OPENING_PRICE"));
-					System.out.println("|"+ jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP") + " | "
-							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE") + " | "
-							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE") + " | "
-							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_HIGH_PRICE") + " | "
-							+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_LOW_PRICE")
-							);
-				}
+			String key = jsonArray.getString(0);
+			
+			JSONArray jsonArrayLevel2 = jsonObject.getJSONArray(key);
+			float avgClose = 0;
+			int count = 0;
+			for (int j = 0; j < jsonArrayLevel2.length(); j++) {
+				list.add(jsonArrayLevel2.getJSONObject(0).getFloat("CH_OPENING_PRICE"));
+				avgClose += jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE"); 
+				count++;
 			}
+			System.out.println("T30-avg, " + symbol +": " + avgClose/count);
 
 		} catch (Exception e) {
 
@@ -69,7 +90,7 @@ public class Quote {
 			System.out.println(e);
 		}
 	}
-
+	
 	public static String jsonGetRequest(String urlQueryString) {
 		String json = null;
 		try {
@@ -78,7 +99,6 @@ public class Quote {
 			connection.setDoOutput(true);
 			connection.setInstanceFollowRedirects(false);
 			connection.setRequestMethod("GET");
-			// todo: moved to a small method this map setters
 			Map<String, String> headers = new HashMap<>();
 			headers.put("charset", "utf-8");
 			headers.put("X-CSRF-Token", "fetch");
@@ -100,6 +120,45 @@ public class Quote {
 			ex.printStackTrace();
 		}
 		return json;
+	}
+	
+
+	public static void printPriceData(String json,String symbol) {
+		try {
+			JSONObject jsonObject = new JSONObject(json);
+			JSONArray jsonArray = jsonObject.names();
+			List<Float> list = new ArrayList<Float>();
+
+			String key = jsonArray.getString(0);
+
+			
+			System.out.println("|----------------------------------------------|");
+			System.out.println("|Date        |Open | Close   |High    |Low    |");
+			System.out.println("|----------------------------------------------");
+			
+
+			JSONArray jsonArrayLevel2 = jsonObject.getJSONArray(key);
+			float avgClose = 0;
+			int count = 0;
+			for (int j = 0; j < jsonArrayLevel2.length(); j++) {
+				list.add(jsonArrayLevel2.getJSONObject(0).getFloat("CH_OPENING_PRICE"));
+				
+				System.out.println("|" + jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_HIGH_PRICE") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_LOW_PRICE") + " | ");
+				
+				avgClose += jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE"); 
+				count++;
+			}
+			System.out.println("T30-avg, " + symbol +": " + avgClose/count);
+
+		} catch (Exception e) {
+
+			System.out.println("position: " + e.getStackTrace());
+			System.out.println(e);
+		}
 	}
 
 	private static String streamToString(InputStream inputStream) {
