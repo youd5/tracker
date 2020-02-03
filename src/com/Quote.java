@@ -1,7 +1,9 @@
 package com;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Sample URL from where to pull the data
@@ -27,14 +29,33 @@ public class Quote {
 		List <String> symbolList = getEquitySymbolList();
 		String symbol;
 		try {
+			
+			// Creating a File object that represents the disk file. 
+	        PrintStream o = new PrintStream(new File("A1.html")); 
+	  
+	        // Store current System.out before assigning a new value 
+	        PrintStream console = System.out; 
+	  
+	        // Assign o to output stream 
+	        System.setOut(o); 
+	        System.out.println("<html><body><table>"); 
+	  
+	        // Use stored value for output stream 
+	        //System.setOut(console); 
+	        //System.out.println("This will be written on the console!"); 
+	        System.out.println("<tr><td><b>Symbol</b></td><td><b> T90 avg</b></td><tr>");
+	        
 			for(int i = 0; i < symbolList.size(); i++) {
 				symbol = symbolList.get(i);
 				String url = urlString + symbol;
 				String json = jsonGetRequest(url);
 				parseJson(json, symbol);
+				
 			}
-			
+			System.out.println("</table></body></html>");
 			//System.out.println(json);
+			File htmlFile = new File("A1.html");
+			FormatResult.openInBrowser(htmlFile.toURL().toString());
 			
 		} catch (Exception e) {
 			System.out.println("Error");
@@ -55,6 +76,7 @@ public class Quote {
 		symbolList.add("TCS");
 		symbolList.add("HDFCBANK");
 		symbolList.add("MARUTI");
+		
 		symbolList.add("BAJFINANCE");
 		symbolList.add("KOTAKBANK");
 		symbolList.add("WIPRO");
@@ -82,7 +104,7 @@ public class Quote {
 				avgClose += jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE"); 
 				count++;
 			}
-			System.out.println("T30-avg, " + symbol +": " + avgClose/count);
+			System.out.println(" <tr><td>" + symbol +": </td><td> " + avgClose/count + "</td></tr>");
 
 		} catch (Exception e) {
 
