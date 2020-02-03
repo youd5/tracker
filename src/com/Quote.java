@@ -15,6 +15,9 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import util.FormatResult;
+import util.SymbolList;
+
 /**
  * Sample URL from where to pull the data
  * https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
@@ -26,7 +29,7 @@ public class Quote {
 		String subUrlHD = "/api/historical/cm/equity?";
 		String urlParamsHD = "series=[%22EQ%22]&from=30-07-2019&to=02-02-2020&symbol=";
 		String urlString = baseNSEUrl + subUrlHD + urlParamsHD;
-		List <String> symbolList = getEquitySymbolList();
+		List <String> symbolList = SymbolList.getEquitySymbolList();
 		String symbol;
 		try {
 			
@@ -39,10 +42,6 @@ public class Quote {
 	        // Assign o to output stream 
 	        System.setOut(o); 
 	        System.out.println("<html><body><table>"); 
-	  
-	        // Use stored value for output stream 
-	        //System.setOut(console); 
-	        //System.out.println("This will be written on the console!"); 
 	        System.out.println("<tr><td><b>Symbol</b></td><td><b> T90 avg</b></td><tr>");
 	        
 			for(int i = 0; i < symbolList.size(); i++) {
@@ -64,29 +63,7 @@ public class Quote {
 
 	}
 	
-	public static List<String> getEquitySymbolList(){
-		List <String> symbolList = new ArrayList<String>();
-		symbolList.add("ICICIBANK");
-		symbolList.add("ITC");
-		symbolList.add("HINDUNILVR");
-		symbolList.add("NESTLEIND");
-		symbolList.add("TECHM");
-		symbolList.add("HDFC");
-		symbolList.add("LT");
-		symbolList.add("TCS");
-		symbolList.add("HDFCBANK");
-		symbolList.add("MARUTI");
-		
-		symbolList.add("BAJFINANCE");
-		symbolList.add("KOTAKBANK");
-		symbolList.add("WIPRO");
-		symbolList.add("RELIANCE");
-		symbolList.add("SBIN");
-		symbolList.add("BHARTIARTL");
-		symbolList.add("TITAN");
-		symbolList.add("EICHERMOT");
-		return symbolList;
-	}
+	
 
 	public static void parseJson(String json,String symbol) {
 		try {

@@ -1,4 +1,4 @@
-package com;
+package util;
 
 import java.awt.Desktop;
 import java.net.URI;
