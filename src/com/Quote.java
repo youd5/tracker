@@ -23,39 +23,20 @@ import util.SymbolList;
  * https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
  */
 public class Quote {
-
+	public static String urlString = "https://nseindia.com/api/historical/cm/equity?series=[%22EQ%22]&from=30-07-2019&to=02-02-2020&symbol=";
+	
 	public static void main(String args[]) {
-		String baseNSEUrl = "https://nseindia.com";
-		String subUrlHD = "/api/historical/cm/equity?";
-		String urlParamsHD = "series=[%22EQ%22]&from=30-07-2019&to=02-02-2020&symbol=";
-		String urlString = baseNSEUrl + subUrlHD + urlParamsHD;
 		List <String> symbolList = SymbolList.getEquitySymbolList();
+		Map <String,String> marketData = new HashMap<String,String>();
 		String symbol;
 		try {
-			
-			// Creating a File object that represents the disk file. 
-	        PrintStream o = new PrintStream(new File("A1.html")); 
-	  
-	        // Store current System.out before assigning a new value 
-	        PrintStream console = System.out; 
-	  
-	        // Assign o to output stream 
-	        System.setOut(o); 
-	        System.out.println("<html><body><table>"); 
-	        System.out.println("<tr><td><b>Symbol</b></td><td><b> T90 avg</b></td><tr>");
-	        
 			for(int i = 0; i < symbolList.size(); i++) {
 				symbol = symbolList.get(i);
 				String url = urlString + symbol;
 				String json = jsonGetRequest(url);
 				parseJson(json, symbol);
-				
+				marketData.put(symbol, json);
 			}
-			System.out.println("</table></body></html>");
-			//System.out.println(json);
-			File htmlFile = new File("A1.html");
-			FormatResult.openInBrowser(htmlFile.toURL().toString());
-			
 		} catch (Exception e) {
 			System.out.println("Error");
 			e.printStackTrace();
@@ -81,7 +62,7 @@ public class Quote {
 				avgClose += jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE"); 
 				count++;
 			}
-			System.out.println(" <tr><td>" + symbol +": </td><td> " + avgClose/count + "</td></tr>");
+			System.out.println(symbol +": " + avgClose/count);
 
 		} catch (Exception e) {
 
@@ -159,6 +140,41 @@ public class Quote {
 			System.out.println(e);
 		}
 	}
+	
+	
+	public static void printResultToHTML() {
+		List <String> symbolList = SymbolList.getEquitySymbolList();
+		String symbol;
+		try {
+
+			// Creating a File object that represents the disk file.
+			PrintStream o = new PrintStream(new File("A1.html"));
+
+			// Store current System.out before assigning a new value
+			PrintStream console = System.out;
+
+			// Assign o to output stream
+			System.setOut(o);
+			System.out.println("<html><body><table>");
+			System.out.println("<tr><td><b>Symbol</b></td><td><b> T90 avg</b></td><tr>");
+
+			for (int i = 0; i < symbolList.size(); i++) {
+				symbol = symbolList.get(i);
+				String url = urlString + symbol;
+				String json = jsonGetRequest(url);
+				parseJson(json, symbol);
+
+			}
+			System.out.println("</table></body></html>");
+			// System.out.println(json);
+			File htmlFile = new File("A1.html");
+			FormatResult.openInBrowser(htmlFile.toURL().toString());
+
+		} catch (Exception e) {
+			System.out.println("Error");
+			e.printStackTrace();
+		}
+	}	
 
 	private static String streamToString(InputStream inputStream) {
 		String text = new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
