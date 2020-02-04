@@ -32,8 +32,7 @@ public class Quote {
 		try {
 			for(int i = 0; i < symbolList.size(); i++) {
 				symbol = symbolList.get(i);
-				String url = urlString + symbol;
-				String json = jsonGetRequest(url);
+				String json = fetchHistoricalQuotesJson(symbol);
 				parseJson(json, symbol);
 				marketData.put(symbol, json);
 			}
@@ -42,6 +41,12 @@ public class Quote {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static String fetchHistoricalQuotesJson(String symbol) {
+		String url = urlString + symbol;
+		String json = jsonGetRequest(url);
+		return json;
 	}
 	
 	
