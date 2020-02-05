@@ -40,7 +40,7 @@ public class Quote {
 			System.out.println("Error");
 			e.printStackTrace();
 		}
-
+		System.out.println("UDAY");
 	}
 	
 	public static String fetchHistoricalQuotesJson(String symbol) {
