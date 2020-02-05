@@ -7,3 +7,4 @@ CREATE TABLE symbols (
     symbol varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
+INSERT INTO symbols (name,symbol) VALUES ('ICICIBANK','ICICIBANK');
