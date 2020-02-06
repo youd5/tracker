@@ -15,6 +15,7 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import db.HistoricalPricesDaily;
 import util.FormatResult;
 import util.SymbolList;
 
@@ -40,7 +41,7 @@ public class Quote {
 			System.out.println("Error");
 			e.printStackTrace();
 		}
-		System.out.println("UDAY");
+		System.out.println("END execution");
 	}
 	
 	public static String fetchHistoricalQuotesJson(String symbol) {
@@ -63,6 +64,7 @@ public class Quote {
 			float avgClose = 0;
 			int count = 0;
 			for (int j = 0; j < jsonArrayLevel2.length(); j++) {
+				HistoricalPricesDaily.select();
 				list.add(jsonArrayLevel2.getJSONObject(0).getFloat("CH_OPENING_PRICE"));
 				avgClose += jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE"); 
 				count++;

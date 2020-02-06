@@ -7,7 +7,7 @@ public class SymbolList {
 	public static List<String> getEquitySymbolList(){
 		List <String> symbolList = new ArrayList<String>();
 		symbolList.add("ICICIBANK");
-		
+		/*
 		symbolList.add("ITC");
 		symbolList.add("HINDUNILVR");
 		
@@ -26,7 +26,7 @@ public class SymbolList {
 		symbolList.add("BHARTIARTL");
 		symbolList.add("TITAN");
 		symbolList.add("EICHERMOT");
-		
+		*/
 		return symbolList;
 	}
 }
