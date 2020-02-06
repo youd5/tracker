@@ -1,4 +1,4 @@
-package com;
+package coma;
 
 public class StockDetails {
 	private float high,low,open,close,ltp;

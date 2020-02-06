@@ -1,4 +1,4 @@
-package com;
+package coma;
 
 public class Sieve {
 	static int N;
