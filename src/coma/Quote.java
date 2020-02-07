@@ -6,6 +6,10 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +28,7 @@ import util.SymbolList;
  * https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
  */
 public class Quote {
-	public static String urlString = "https://nseindia.com/api/historical/cm/equity?series=[%22EQ%22]&from=30-07-2019&to=02-02-2020&symbol=";
+	public static String urlString = "https://nseindia.com/api/historical/cm/equity?series=[%22EQ%22]&from=30-07-2019&to=06-02-2020&symbol=";
 	
 	public static void main(String args[]) {
 		List <String> symbolList = SymbolList.getEquitySymbolList();
@@ -56,7 +60,6 @@ public class Quote {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			JSONArray jsonArray = jsonObject.names();
-			List<Float> list = new ArrayList<Float>();
 
 			String key = jsonArray.getString(0);
 			
@@ -64,8 +67,29 @@ public class Quote {
 			float avgClose = 0;
 			int count = 0;
 			for (int j = 0; j < jsonArrayLevel2.length(); j++) {
-				HistoricalPricesDaily.select();
-				list.add(jsonArrayLevel2.getJSONObject(0).getFloat("CH_OPENING_PRICE"));
+				//HistoricalPricesDaily.select();
+				
+				System.out.println("|" + jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_HIGH_PRICE") + " | "
+						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_LOW_PRICE") + " | ");
+				
+				float open_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE");
+			    float close_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE");
+			    float prev_close_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_PREVIOUS_CLS_PRICE");
+			    float high_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_HIGH_PRICE");
+			    float low_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_LOW_PRICE");
+			    float ltp_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_LAST_TRADED_PRICE");
+			    float high52 = jsonArrayLevel2.getJSONObject(j).getFloat("CH_52WEEK_HIGH_PRICE");
+			    float low52 = jsonArrayLevel2.getJSONObject(j).getFloat("CH_52WEEK_LOW_PRICE");
+			    int vol = jsonArrayLevel2.getJSONObject(j).getInt("CH_TOT_TRADED_QTY");
+			    String mTimeStamp = jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP");
+			    
+			    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy"); 
+			    LocalDate date = LocalDate.parse(mTimeStamp, formatter);
+				
+			    HistoricalPricesDaily.insert(symbol, open_price, close_price, prev_close_price, high_price, low_price, ltp_price, high52, low52, vol, java.sql.Date.valueOf(date));
 				avgClose += jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE"); 
 				count++;
 			}
@@ -78,38 +102,6 @@ public class Quote {
 		}
 	}
 	
-	public static String jsonGetRequest(String urlQueryString) {
-		String json = null;
-		try {
-			URL url = new URL(urlQueryString);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setDoOutput(true);
-			connection.setInstanceFollowRedirects(false);
-			connection.setRequestMethod("GET");
-			Map<String, String> headers = new HashMap<>();
-			headers.put("charset", "utf-8");
-			headers.put("X-CSRF-Token", "fetch");
-			headers.put("content-type", "application/json");
-			headers.put("Accept", "*/*");
-			headers.put("Accept-Language", "en-US,en;q=0.5");
-			headers.put("Host", "nseindia.com");
-			headers.put("Referer",
-					"\"https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp?symbol=INFY&illiquid=0&smeFlag=0&itpFlag=0");
-			headers.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0");
-			headers.put("X-Requested-With", "XMLHttpRequest");
-			for (String headerKey : headers.keySet()) {
-				connection.setRequestProperty(headerKey, headers.get(headerKey));
-			}
-			connection.connect();
-			InputStream inStream = connection.getInputStream();
-			json = streamToString(inStream); // input stream to string
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		return json;
-	}
-	
-
 	public static void printPriceData(String json,String symbol) {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
@@ -182,6 +174,36 @@ public class Quote {
 			e.printStackTrace();
 		}
 	}	
+	public static String jsonGetRequest(String urlQueryString) {
+		String json = null;
+		try {
+			URL url = new URL(urlQueryString);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true);
+			connection.setInstanceFollowRedirects(false);
+			connection.setRequestMethod("GET");
+			Map<String, String> headers = new HashMap<>();
+			headers.put("charset", "utf-8");
+			headers.put("X-CSRF-Token", "fetch");
+			headers.put("content-type", "application/json");
+			headers.put("Accept", "*/*");
+			headers.put("Accept-Language", "en-US,en;q=0.5");
+			headers.put("Host", "nseindia.com");
+			headers.put("Referer",
+					"\"https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp?symbol=INFY&illiquid=0&smeFlag=0&itpFlag=0");
+			headers.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0");
+			headers.put("X-Requested-With", "XMLHttpRequest");
+			for (String headerKey : headers.keySet()) {
+				connection.setRequestProperty(headerKey, headers.get(headerKey));
+			}
+			connection.connect();
+			InputStream inStream = connection.getInputStream();
+			json = streamToString(inStream); // input stream to string
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return json;
+	}
 
 	private static String streamToString(InputStream inputStream) {
 		String text = new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
