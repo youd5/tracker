@@ -6,27 +6,27 @@ import java.util.List;
 public class SymbolList {
 	public static List<String> getEquitySymbolList(){
 		List <String> symbolList = new ArrayList<String>();
-		symbolList.add("ICICIBANK");
-		
-		symbolList.add("ITC");
-		symbolList.add("HINDUNILVR");
-		
-		symbolList.add("NESTLEIND");
-		symbolList.add("TECHM");
-		symbolList.add("HDFC");
-		symbolList.add("LT");
-		symbolList.add("TCS");
-		symbolList.add("HDFCBANK");
-		symbolList.add("MARUTI");
+
 		symbolList.add("BAJFINANCE");
+		symbolList.add("BHARTIARTL");
+		/*
+		symbolList.add("EICHERMOT");
+		symbolList.add("HDFC");
+		symbolList.add("HDFCBANK");
+		symbolList.add("HINDUNILVR");
+		symbolList.add("ICICIBANK");
+		symbolList.add("ITC");
 		symbolList.add("KOTAKBANK");
-		symbolList.add("WIPRO");
+		symbolList.add("LT");
+		symbolList.add("MARUTI");
+		symbolList.add("NESTLEIND");
 		symbolList.add("RELIANCE");
 		symbolList.add("SBIN");
-		symbolList.add("BHARTIARTL");
+		symbolList.add("TCS");
+		symbolList.add("TECHM");
 		symbolList.add("TITAN");
-		symbolList.add("EICHERMOT");
-		
+		symbolList.add("WIPRO");
+		*/
 		return symbolList;
 	}
 }
