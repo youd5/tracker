@@ -60,13 +60,7 @@ public class HistoricalPricesDaily {
 			Date mTIMESTAMP) {
 		try {
 			Timestamp created_on = new java.sql.Timestamp(new java.util.Date().getTime());
-			
-			
 			Class.forName("com.mysql.jdbc.Driver");
-			
-			
-			
-			
 			Connection connect = DriverManager.getConnection(dbUrl, dbUser, dbpwd);
 
 			// PreparedStatements can use variables and are more efficient

@@ -27,4 +27,6 @@ CREATE TABLE historical_prices_daily (
     PRIMARY KEY (id)
 );
 
+ALTER TABLE historical_prices_daily
+ADD CONSTRAINT symbol_mTIMESTAMP_unique UNIQUE (symbol, mTIMESTAMP);
 
