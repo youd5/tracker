@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
@@ -58,10 +59,9 @@ public class HistoricalPricesDaily {
 			float high_price, float low_price, float ltp_price, float high52, float low52, int vol,
 			Date mTIMESTAMP) {
 		try {
-			LocalDateTime d1 = LocalDateTime.now();
-			Instant instant = Instant.now();
+			Timestamp created_on = new java.sql.Timestamp(new java.util.Date().getTime());
 			
-			Date created_on = new Date(System.currentTimeMillis()); 
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			
@@ -84,8 +84,8 @@ public class HistoricalPricesDaily {
 			preparedStatement.setFloat(9, low52);
 			preparedStatement.setInt(10, vol);
 			preparedStatement.setDate(11, mTIMESTAMP);
-			preparedStatement.setDate(12, created_on);
-			preparedStatement.setDate(13, created_on);
+			preparedStatement.setTimestamp(12, created_on);
+			preparedStatement.setTimestamp(13, created_on);
 			preparedStatement.executeUpdate();
 			connect.close();
 		} catch (Exception e) {

@@ -67,14 +67,6 @@ public class Quote {
 			float avgClose = 0;
 			int count = 0;
 			for (int j = 0; j < jsonArrayLevel2.length(); j++) {
-				//HistoricalPricesDaily.select();
-				
-				System.out.println("|" + jsonArrayLevel2.getJSONObject(j).getString("mTIMESTAMP") + " | "
-						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE") + " | "
-						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE") + " | "
-						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_HIGH_PRICE") + " | "
-						+ jsonArrayLevel2.getJSONObject(j).getFloat("CH_TRADE_LOW_PRICE") + " | ");
-				
 				float open_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_OPENING_PRICE");
 			    float close_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_CLOSING_PRICE");
 			    float prev_close_price = jsonArrayLevel2.getJSONObject(j).getFloat("CH_PREVIOUS_CLS_PRICE");
