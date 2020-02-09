@@ -71,7 +71,7 @@ public class HistoricalPricesDaily {
 
 			// PreparedStatements can use variables and are more efficient
 			PreparedStatement preparedStatement = connect.prepareStatement(
-					"insert into  historical_prices_daily values (default, ?, ?,?, ?,?, ?,?, ?,?, ?,?, ?,?)");
+					"insert into  historical_prices_daily values (default, ?, ?,?, ?,?, ?,?, ?,?, ?,?, ?,default)");
 			// Parameters start with 1
 			preparedStatement.setString(1, symbol);
 			preparedStatement.setFloat(2, open_price);
@@ -85,7 +85,6 @@ public class HistoricalPricesDaily {
 			preparedStatement.setInt(10, vol);
 			preparedStatement.setDate(11, mTIMESTAMP);
 			preparedStatement.setTimestamp(12, created_on);
-			preparedStatement.setTimestamp(13, created_on);
 			preparedStatement.executeUpdate();
 			connect.close();
 		} catch (Exception e) {

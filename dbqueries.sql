@@ -22,7 +22,9 @@ CREATE TABLE historical_prices_daily (
     low52 float4, 
     vol BIGINT,
     mTIMESTAMP DATE,
-    created_on DATETIME,
-    updated_on DATETIME,
+    created_on DATETIME NOT NULL DEFAULT NOW(),
+    updated_on DATETIME NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
+
+
