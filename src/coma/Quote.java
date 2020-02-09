@@ -28,7 +28,7 @@ import util.SymbolList;
  * https://nseindia.com/api/historical/cm/equity?symbol=ICICIBANK&series=[%22EQ%22]&from=30-07-2019&to=30-01-2020
  */
 public class Quote {
-	public static String urlString = "https://nseindia.com/api/historical/cm/equity?series=[%22EQ%22]&from=30-07-2019&to=06-02-2020&symbol=";
+	public static String urlString = "https://nseindia.com/api/historical/cm/equity?series=[%22EQ%22]&from=30-07-2019&to=09-02-2020&symbol=";
 	
 	public static void main(String args[]) {
 		List <String> symbolList = SymbolList.getEquitySymbolList();

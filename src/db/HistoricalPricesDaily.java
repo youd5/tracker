@@ -1,6 +1,5 @@
 package db;
 
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -8,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
 
 public class HistoricalPricesDaily {
 	static String table = "historical_prices_daily";
