@@ -16,7 +16,7 @@ public class HistoricalPricesDaily {
 	
 	public static void main(String args[]) {
 		Date date = new Date(System.currentTimeMillis());
-		insert("ITC", 1,2,3,4,5,6,7,8,1000000,date);
+		insert("TestData", 1,2,3,4,5,6,7,8,1000000,date);
 		//select();
 	}
 	public static void select() {

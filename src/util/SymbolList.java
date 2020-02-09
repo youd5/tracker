@@ -6,10 +6,12 @@ import java.util.List;
 public class SymbolList {
 	public static List<String> getEquitySymbolList(){
 		List <String> symbolList = new ArrayList<String>();
-
+		symbolList.add("EDELWEISS");
+		/*
+		symbolList.add("ASHOKLEY");
 		symbolList.add("BAJFINANCE");
 		symbolList.add("BHARTIARTL");
-		/*
+		
 		symbolList.add("EICHERMOT");
 		symbolList.add("HDFC");
 		symbolList.add("HDFCBANK");
